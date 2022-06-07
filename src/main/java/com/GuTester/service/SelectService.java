@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ChoiceInformationService {
+public class SelectService {
 
     private final DeviceManufacturerRepository deviceManufacturerRepository;
     private final DeviceRepository deviceRepository;
