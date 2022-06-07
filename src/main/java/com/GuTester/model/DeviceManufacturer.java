@@ -15,7 +15,7 @@ public class DeviceManufacturer {
 
     @Id
     @GeneratedValue
-    @Column(nullable = false, name = "confirmation_code_id")
+    @Column(nullable = false, name = "device_manufacturer_id")
     private Long deviceManufacturerId;
 
     @Column

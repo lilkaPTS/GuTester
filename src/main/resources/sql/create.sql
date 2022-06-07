@@ -4,6 +4,7 @@ create table "user"
     email    varchar(255)  not null,
     name     varchar(255)  not null,
     password varchar(255)  not null,
+    role     varchar(255)  not null,
     status   varchar(255)  not null,
     primary key (user_id)
 );
@@ -48,8 +49,9 @@ create table network
 create table device
 (
     device_id bigint generated always as identity,
+    order_link varchar(255),
     device_manufacturer_id bigint,
-    device_name varchar(255),
+    device_model varchar(255),
     os_id bigint,
 --     screen_diagonal numeric(4,1),
 --     screen_resolution varchar(255),
