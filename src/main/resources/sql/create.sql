@@ -1,12 +1,12 @@
-create table "user"
+create table users
 (
-    user_id  bigint generated always as identity,
+    users_id  bigint generated always as identity,
     email    varchar(255)  not null,
     name     varchar(255)  not null,
     password varchar(255)  not null,
     role     varchar(255)  not null,
     status   varchar(255)  not null,
-    primary key (user_id)
+    primary key (users_id)
 );
 
 create table confirmation_codes
@@ -70,14 +70,14 @@ create table device
 create table tester
 (
     tester_id bigint generated always as identity,
-    user_id bigint,
+    users_id bigint,
     device_id bigint,
     os_id bigint,
     mobile_operator_id bigint,
     rating numeric(3,2),
     primary key (tester_id),
     CONSTRAINT fk_os FOREIGN KEY (os_id) references os(os_id),
-    CONSTRAINT fk_user FOREIGN KEY (user_id) references "user"(user_id),
+    CONSTRAINT fk_users FOREIGN KEY (users_id) references users(users_id),
     CONSTRAINT fk_device FOREIGN KEY (device_id) references device(device_id),
     CONSTRAINT fk_mobile_operator FOREIGN KEY (mobile_operator_id) references mobile_operator(mobile_operator_id)
 );
@@ -94,23 +94,23 @@ create table tester_network
 create table developer
 (
     developer_id bigint generated always as identity,
-    user_id bigint,
+    users_id bigint,
     rating numeric(3,2),
     primary key (developer_id),
-    CONSTRAINT fk_user FOREIGN KEY (user_id) references "user"(user_id)
+    CONSTRAINT fk_users FOREIGN KEY (users_id) references users(users_id)
 );
 
 create table admin
 (
     admin_id bigint generated always as identity,
-    user_id bigint,
+    users_id bigint,
     primary key (admin_id),
-    CONSTRAINT fk_user FOREIGN KEY (user_id) references "user"(user_id)
+    CONSTRAINT fk_users FOREIGN KEY (users_id) references users(users_id)
 );
 
-create table "order"
+create table orders
 (
-    order_id bigint generated always as identity,
+    orders_id bigint generated always as identity,
     developer_id bigint,
     os_name varchar(255),
     source_link varchar(255),
@@ -120,74 +120,74 @@ create table "order"
     device_release_year_start int2,
     device_release_year_end int2,
     status varchar(255),
-    order_creation_date date,
-    primary key (order_id),
+    orders_creation_date date,
+    primary key (orders_id),
     CONSTRAINT fk_device FOREIGN KEY (developer_id) references developer(developer_id)
 );
 
-create table description_of_order_errors
+create table description_of_orders_errors
 (
-    description_of_order_errors_id bigint generated always as identity,
-    order_id bigint,
+    description_of_orders_errors_id bigint generated always as identity,
+    orders_id bigint,
     admin_id bigint,
     text varchar(3000),
     description_creation_date date,
-    primary key (description_of_order_errors_id),
-    CONSTRAINT fk_order FOREIGN KEY (order_id) references "order"(order_id),
+    primary key (description_of_orders_errors_id),
+    CONSTRAINT fk_orders FOREIGN KEY (orders_id) references orders(orders_id),
     CONSTRAINT fk_admin FOREIGN KEY (admin_id) references admin(admin_id)
 );
 
-create table order_os
+create table orders_os
 (
-    order_id bigint,
+    orders_id bigint,
     os_id bigint,
-    PRIMARY KEY (order_id, os_id),
-    CONSTRAINT fk_order FOREIGN KEY (order_id) references "order"(order_id),
+    PRIMARY KEY (orders_id, os_id),
+    CONSTRAINT fk_orders FOREIGN KEY (orders_id) references orders(orders_id),
     CONSTRAINT fk_os FOREIGN KEY (os_id) references os(os_id)
 );
 
-create table order_device
+create table orders_device
 (
-    order_id bigint,
+    orders_id bigint,
     device_id bigint,
-    PRIMARY KEY (order_id, device_id),
-    CONSTRAINT fk_order FOREIGN KEY (order_id) references "order"(order_id),
+    PRIMARY KEY (orders_id, device_id),
+    CONSTRAINT fk_orders FOREIGN KEY (orders_id) references orders(orders_id),
     CONSTRAINT fk_device FOREIGN KEY (device_id) references device(device_id)
 );
 
-create table order_device_manufacturer
+create table orders_device_manufacturer
 (
-    order_id bigint,
+    orders_id bigint,
     device_manufacturer_id bigint,
-    PRIMARY KEY (order_id, device_manufacturer_id),
-    CONSTRAINT fk_order FOREIGN KEY (order_id) references "order"(order_id),
+    PRIMARY KEY (orders_id, device_manufacturer_id),
+    CONSTRAINT fk_orders FOREIGN KEY (orders_id) references orders(orders_id),
     CONSTRAINT fk_device_manufacturer FOREIGN KEY (device_manufacturer_id) references device_manufacturer(device_manufacturer_id)
 );
 
-create table order_mobile_operator
+create table orders_mobile_operator
 (
-    order_id bigint,
+    orders_id bigint,
     mobile_operator_id bigint,
-    PRIMARY KEY (order_id, mobile_operator_id),
-    CONSTRAINT fk_order FOREIGN KEY (order_id) references "order"(order_id),
+    PRIMARY KEY (orders_id, mobile_operator_id),
+    CONSTRAINT fk_orders FOREIGN KEY (orders_id) references orders(orders_id),
     CONSTRAINT fk_mobile_operator FOREIGN KEY (mobile_operator_id) references mobile_operator(mobile_operator_id)
 );
 
-create table order_network
+create table orders_network
 (
-    order_id bigint,
+    orders_id bigint,
     network_id bigint,
-    PRIMARY KEY (order_id, network_id),
-    CONSTRAINT fk_order FOREIGN KEY (order_id) references "order"(order_id),
+    PRIMARY KEY (orders_id, network_id),
+    CONSTRAINT fk_orders FOREIGN KEY (orders_id) references orders(orders_id),
     CONSTRAINT fk_network FOREIGN KEY (network_id) references network(network_id)
 );
 
-create table order_tester
+create table orders_tester
 (
-    order_id bigint,
+    orders_id bigint,
     tester_id bigint,
-    PRIMARY KEY (order_id, tester_id),
-    CONSTRAINT fk_order FOREIGN KEY (order_id) references "order"(order_id),
+    PRIMARY KEY (orders_id, tester_id),
+    CONSTRAINT fk_orders FOREIGN KEY (orders_id) references orders(orders_id),
     CONSTRAINT fk_tester FOREIGN KEY (tester_id) references tester(tester_id)
 );
 

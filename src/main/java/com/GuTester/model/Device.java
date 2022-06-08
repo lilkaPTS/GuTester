@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Device {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "device_id")
     private Long deviceId;
 

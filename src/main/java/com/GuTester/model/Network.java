@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Network {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "network_id")
     private Long networkId;
 

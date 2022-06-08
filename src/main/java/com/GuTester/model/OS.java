@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class OS {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "os_id")
     private Long osId;
 

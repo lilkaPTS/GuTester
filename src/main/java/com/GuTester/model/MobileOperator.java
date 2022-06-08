@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class MobileOperator {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "mobile_operator_id")
     private Long mobileOperatorId;
 

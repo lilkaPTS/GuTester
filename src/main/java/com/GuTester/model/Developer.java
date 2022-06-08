@@ -7,18 +7,20 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "device_manufacturer")
+@Table(name = "developer")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeviceManufacturer {
-
+public class Developer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, name = "device_manufacturer_id")
-    private Long deviceManufacturerId;
+    @Column(nullable = false, name = "developer_id")
+    private Long developerId;
+
+    @OneToOne
+    @JoinColumn(name = "users_id")
+    private User user;
 
     @Column
-    private String name;
-
+    private String rating;
 }

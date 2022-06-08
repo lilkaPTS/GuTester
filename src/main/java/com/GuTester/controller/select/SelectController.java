@@ -1,4 +1,4 @@
-package com.GuTester.controller.SelectInformation;
+package com.GuTester.controller.select;
 
 import com.GuTester.service.SelectService;
 import lombok.RequiredArgsConstructor;
