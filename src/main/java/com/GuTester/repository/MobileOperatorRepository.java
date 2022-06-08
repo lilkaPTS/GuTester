@@ -9,4 +9,6 @@ import java.util.List;
 public interface MobileOperatorRepository extends JpaRepository<MobileOperator, Long> {
     @Query(value = "select name from mobile_operator", nativeQuery = true)
     List<String> getAllNames();
+
+    MobileOperator getMobileOperatorByName(String name);
 }

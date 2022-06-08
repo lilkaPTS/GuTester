@@ -11,5 +11,5 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
     @Query(value = "select * from device", nativeQuery = true)
     List<Device> getAllDevices();
 
-    Device findAllByDeviceId(Long id);
+    Device getDeviceByDeviceModel(String deviceModel);
 }

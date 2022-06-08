@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class TesterRegistrationDTO extends RegistrationDTO {
-    String[] devices;
-    String[] os;
-    String[] networks;
-    String[] mobileOperators;
+    List<String> devices;
+    List<String> os;
+    List<String> networks;
+    List<String> mobileOperators;
 }

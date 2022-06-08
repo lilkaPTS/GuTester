@@ -1,6 +1,7 @@
 package com.GuTester.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,6 @@ import javax.persistence.*;
 @Table(name = "developer")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Developer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,5 +22,5 @@ public class Developer {
     private User user;
 
     @Column
-    private String rating;
+    private Double rating;
 }

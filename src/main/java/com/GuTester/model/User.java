@@ -2,6 +2,7 @@ package com.GuTester.model;
 
 import com.GuTester.enums.Role;
 import com.GuTester.enums.Status;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -35,11 +36,4 @@ public class User {
     @Column(name = "status")
     private Status status;
 
-    public User(String email, String password, String name, Role role, Status status) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.role = role;
-        this.status = status;
-    }
 }

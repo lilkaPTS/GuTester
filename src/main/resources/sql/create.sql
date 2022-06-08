@@ -74,7 +74,7 @@ create table tester
     device_id bigint,
     os_id bigint,
     mobile_operator_id bigint,
-    rating numeric(3,2),
+    rating numeric(3,2) default 0.00,
     primary key (tester_id),
     CONSTRAINT fk_os FOREIGN KEY (os_id) references os(os_id),
     CONSTRAINT fk_users FOREIGN KEY (users_id) references users(users_id),
@@ -95,7 +95,7 @@ create table developer
 (
     developer_id bigint generated always as identity,
     users_id bigint,
-    rating numeric(3,2),
+    rating numeric(3,2) default 0.00,
     primary key (developer_id),
     CONSTRAINT fk_users FOREIGN KEY (users_id) references users(users_id)
 );

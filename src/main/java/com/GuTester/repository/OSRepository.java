@@ -9,4 +9,6 @@ import java.util.List;
 public interface OSRepository extends JpaRepository<OS, Long> {
     @Query(value = "select * from os", nativeQuery = true)
     List<OS> getAllNames();
+
+    OS getOSByNameAndVersion(String name, String version);
 }

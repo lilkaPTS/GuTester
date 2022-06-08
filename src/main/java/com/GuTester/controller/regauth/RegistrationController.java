@@ -1,5 +1,6 @@
 package com.GuTester.controller.regauth;
 
+import com.GuTester.dto.registration.DeveloperRegistrationDTO;
 import com.GuTester.dto.registration.TesterRegistrationDTO;
 import com.GuTester.service.RegistrationService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,11 @@ public class RegistrationController {
     @PostMapping(value = "/createTester")
     public Boolean createTester(TesterRegistrationDTO dto) {
         return registrationService.createTester(dto);
+    }
+
+    @PostMapping(value = "/createDeveloper")
+    public Boolean createDeveloper(DeveloperRegistrationDTO dto) {
+        return registrationService.createDeveloper(dto);
     }
 
     @PutMapping("/checkConfirmation")

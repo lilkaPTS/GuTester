@@ -9,4 +9,6 @@ import java.util.List;
 public interface NetworkRepository extends JpaRepository<Network, Long> {
     @Query(value = "select name from network", nativeQuery = true)
     List<String> getAllNames();
+
+    Network getNetworkByName(String name);
 }
