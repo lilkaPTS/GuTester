@@ -1,7 +1,10 @@
 package com.GuTester.service;
 
 import com.GuTester.dto.registration.LoginDTO;
+import com.GuTester.enums.Role;
 import com.GuTester.model.User;
+import com.GuTester.repository.DeveloperRepository;
+import com.GuTester.repository.TesterRepository;
 import com.GuTester.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,8 @@ import java.util.Map;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
+    private final TesterRepository testerRepository;
+    private final DeveloperRepository developerRepository;
 
     public ResponseEntity<?> authenticate(LoginDTO userDto) {
         Map<Object, Object> response = new HashMap<>();
@@ -31,6 +36,7 @@ public class AuthenticationService {
         response.put("email", userDto.getEmail());
         response.put("role", user.getRole());
         response.put("name", user.getName());
+        response.put("rating", user.getRole().equals(Role.TESTER) ? testerRepository.findTesterByUser(user).getRating() : developerRepository.findDeveloperByUser(user).getRating());
         response.remove("message");
         return ResponseEntity.ok(response);
     }

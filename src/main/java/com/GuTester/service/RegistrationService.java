@@ -51,7 +51,7 @@ public class RegistrationService {
         userRepository.save(user);
         developer.setUser(user);
         developerRepository.save(developer);
-        //sendConfirmationCode(registrationDTO.getEmail());
+        sendConfirmationCode(registrationDTO.getEmail());
         return true;
     }
 
@@ -86,7 +86,7 @@ public class RegistrationService {
         userRepository.save(user);
         tester.setUser(user);
         testerRepository.save(tester);
-        //sendConfirmationCode(registrationDTO.getEmail());
+        sendConfirmationCode(registrationDTO.getEmail());
         return true;
     }
 

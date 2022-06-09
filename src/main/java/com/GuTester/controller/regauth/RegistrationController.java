@@ -15,22 +15,22 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping(value = "/createTester")
-    public Boolean createTester(TesterRegistrationDTO dto) {
+    public Boolean createTester(@RequestBody TesterRegistrationDTO dto) {
         return registrationService.createTester(dto);
     }
 
     @PostMapping(value = "/createDeveloper")
-    public Boolean createDeveloper(DeveloperRegistrationDTO dto) {
+    public Boolean createDeveloper(@RequestBody DeveloperRegistrationDTO dto) {
         return registrationService.createDeveloper(dto);
     }
 
     @PutMapping("/checkConfirmation")
-    public Boolean checkConfirmationCode(String code, String email) {
+    public Boolean checkConfirmationCode(String email, String code) {
         return registrationService.checkConfirmationCode(email, code);
     }
 
     @PostMapping("/sendConfirmation")
-    public void sendConfirmationCode(String email) {
+    public void sendConfirmationCode(@RequestBody String email) {
         registrationService.sendConfirmationCode(email);
     }
 }
