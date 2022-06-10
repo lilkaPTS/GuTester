@@ -182,7 +182,7 @@ create table orders_network
     CONSTRAINT fk_network FOREIGN KEY (network_id) references network(network_id)
 );
 
-create table orders_tester
+create table orders_approved_tester
 (
     orders_id bigint,
     tester_id bigint,
@@ -190,4 +190,13 @@ create table orders_tester
     CONSTRAINT fk_orders FOREIGN KEY (orders_id) references orders(orders_id),
     CONSTRAINT fk_tester FOREIGN KEY (tester_id) references tester(tester_id)
 );
+
+create table orders_unapproved_tester (
+    orders_id bigint,
+    tester_id bigint,
+    PRIMARY KEY (orders_id, tester_id),
+    CONSTRAINT fk_orders FOREIGN KEY (orders_id) references orders(orders_id),
+    CONSTRAINT fk_tester FOREIGN KEY (tester_id) references tester(tester_id)
+)
+
 

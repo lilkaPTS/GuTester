@@ -1,7 +1,7 @@
 package com.GuTester.repository;
 
 
-import com.GuTester.model.User;
+import com.GuTester.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

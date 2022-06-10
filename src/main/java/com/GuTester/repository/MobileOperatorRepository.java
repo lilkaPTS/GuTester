@@ -1,6 +1,6 @@
 package com.GuTester.repository;
 
-import com.GuTester.model.MobileOperator;
+import com.GuTester.model.entity.MobileOperator;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

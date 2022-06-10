@@ -2,7 +2,7 @@ package com.GuTester.service;
 
 import com.GuTester.dto.registration.LoginDTO;
 import com.GuTester.enums.Role;
-import com.GuTester.model.User;
+import com.GuTester.model.entity.User;
 import com.GuTester.repository.DeveloperRepository;
 import com.GuTester.repository.TesterRepository;
 import com.GuTester.repository.UserRepository;

@@ -16,12 +16,12 @@ public class RegistrationController {
 
     @PostMapping(value = "/createTester")
     public Boolean createTester(@RequestBody TesterRegistrationDTO dto) {
-        return registrationService.createTester(dto);
+        return registrationService.createTester(dto, false);
     }
 
     @PostMapping(value = "/createDeveloper")
     public Boolean createDeveloper(@RequestBody DeveloperRegistrationDTO dto) {
-        return registrationService.createDeveloper(dto);
+        return registrationService.createDeveloper(dto, false);
     }
 
     @PutMapping("/checkConfirmation")

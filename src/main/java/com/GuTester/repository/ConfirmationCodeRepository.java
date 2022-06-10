@@ -1,6 +1,6 @@
 package com.GuTester.repository;
 
-import com.GuTester.model.ConfirmationCode;
+import com.GuTester.model.entity.ConfirmationCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

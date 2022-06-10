@@ -5,10 +5,10 @@ import com.GuTester.dto.registration.RegistrationDTO;
 import com.GuTester.dto.registration.TesterRegistrationDTO;
 import com.GuTester.enums.Role;
 import com.GuTester.enums.Status;
-import com.GuTester.model.ConfirmationCode;
-import com.GuTester.model.Developer;
-import com.GuTester.model.Tester;
-import com.GuTester.model.User;
+import com.GuTester.model.entity.ConfirmationCode;
+import com.GuTester.model.entity.Developer;
+import com.GuTester.model.entity.Tester;
+import com.GuTester.model.entity.User;
 import com.GuTester.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -31,11 +31,11 @@ public class RegistrationService {
     private final OSRepository osRepository;
     private final DeveloperRepository developerRepository;
 
-    public Boolean createDeveloper(DeveloperRegistrationDTO registrationDTO) {
+    public Boolean createDeveloper(DeveloperRegistrationDTO registrationDTO, boolean itIsInit) {
         if(!Role.DEVELOPER.equals(Role.valueOf(registrationDTO.getRole()))) {
             return false;
         }
-        User user = createUser(registrationDTO);
+        User user = createUser(registrationDTO, itIsInit);
         if(user == null) {
             return false;
         }
@@ -45,21 +45,28 @@ public class RegistrationService {
         if(foundUser!=null) {
             foundDeveloper = developerRepository.findDeveloperByUser(foundUser);
         }
-
+        double rating = 0.0;
+        if(itIsInit) {
+            while (rating < 3.5) {
+                rating = Math.random() * 5;
+            }
+        }
         Developer developer = foundDeveloper != null ? foundDeveloper : new Developer();
-        developer.setRating(0.0);
+        developer.setRating(rating);
         userRepository.save(user);
         developer.setUser(user);
         developerRepository.save(developer);
-        sendConfirmationCode(registrationDTO.getEmail());
+        if(!itIsInit) {
+            sendConfirmationCode(registrationDTO.getEmail());
+        }
         return true;
     }
 
-    public Boolean createTester(TesterRegistrationDTO registrationDTO) {
+    public Boolean createTester(TesterRegistrationDTO registrationDTO, boolean itIsInit) {
         if(!Role.TESTER.equals(Role.valueOf(registrationDTO.getRole()))) {
             return false;
         }
-        User user = createUser(registrationDTO);
+        User user = createUser(registrationDTO, itIsInit);
         if(user == null) {
             return false;
         }
@@ -82,11 +89,20 @@ public class RegistrationService {
         );
         String os = registrationDTO.getOs().stream().findFirst().orElse("-");
         tester.setOs(osRepository.getOSByNameAndVersion(StringUtils.substringBefore(os, " "), StringUtils.substringAfter(os, " ")));
-        tester.setRating(0.0);
+
+        double rating = 0.0;
+        if(itIsInit) {
+            while (rating < 3.5) {
+                rating = Math.random() * 5;
+            }
+        }
+        tester.setRating(rating);
         userRepository.save(user);
         tester.setUser(user);
         testerRepository.save(tester);
-        sendConfirmationCode(registrationDTO.getEmail());
+        if(!itIsInit) {
+            sendConfirmationCode(registrationDTO.getEmail());
+        }
         return true;
     }
 
@@ -126,7 +142,7 @@ public class RegistrationService {
         thread.start();
     }
 
-    private User createUser(RegistrationDTO registrationDTO) {
+    private User createUser(RegistrationDTO registrationDTO, boolean itIsInit) {
         if(
                 Role.ADMIN.equals(Role.valueOf(registrationDTO.getRole())) ||
                 StringUtils.isBlank(registrationDTO.getEmail()) ||
@@ -140,7 +156,7 @@ public class RegistrationService {
         user.setName(registrationDTO.getName());
         user.setPassword(new BCryptPasswordEncoder(12).encode(registrationDTO.getPassword()));
         user.setRole(Role.valueOf(registrationDTO.getRole()));
-        user.setStatus(Status.CONFIRMATION);
+        user.setStatus(itIsInit ? Status.ACTIVE : Status.CONFIRMATION);
         return user;
     }
 

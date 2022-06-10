@@ -1,4 +1,4 @@
-package com.GuTester.model;
+package com.GuTester.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,15 +7,15 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "mobile_operator")
+@Table(name = "network")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MobileOperator {
+public class Network {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, name = "mobile_operator_id")
-    private Long mobileOperatorId;
+    @Column(nullable = false, name = "network_id")
+    private Long networkId;
 
     @Column
     private String name;

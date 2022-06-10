@@ -1,4 +1,4 @@
-package com.GuTester.model;
+package com.GuTester.model.entity;
 
 import com.GuTester.enums.Role;
 import com.GuTester.enums.Status;

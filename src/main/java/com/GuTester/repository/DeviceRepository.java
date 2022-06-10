@@ -1,6 +1,6 @@
 package com.GuTester.repository;
 
-import com.GuTester.model.Device;
+import com.GuTester.model.entity.Device;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

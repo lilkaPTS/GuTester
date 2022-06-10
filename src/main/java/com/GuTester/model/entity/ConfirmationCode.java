@@ -1,4 +1,4 @@
-package com.GuTester.model;
+package com.GuTester.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

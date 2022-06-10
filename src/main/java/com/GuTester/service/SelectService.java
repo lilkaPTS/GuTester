@@ -1,11 +1,9 @@
 package com.GuTester.service;
 
-import com.GuTester.model.Device;
 import com.GuTester.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

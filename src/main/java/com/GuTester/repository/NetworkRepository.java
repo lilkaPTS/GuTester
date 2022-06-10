@@ -1,6 +1,6 @@
 package com.GuTester.repository;
 
-import com.GuTester.model.Network;
+import com.GuTester.model.entity.Network;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
