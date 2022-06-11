@@ -19,7 +19,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "orders_id")
-    private Long OrderId;
+    private Long orderId;
 
     @OneToOne
     @JoinColumn(name = "developer_id")

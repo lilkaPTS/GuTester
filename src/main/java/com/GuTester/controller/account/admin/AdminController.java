@@ -1,4 +1,4 @@
-package com.GuTester.controller.admin;
+package com.GuTester.controller.account.admin;
 
 import com.GuTester.service.OrderService;
 import lombok.RequiredArgsConstructor;

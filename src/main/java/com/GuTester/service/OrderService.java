@@ -1,6 +1,6 @@
 package com.GuTester.service;
 
-import com.GuTester.dto.order.OrderDTO;
+import com.GuTester.dto.order.CreateOrderDTO;
 import com.GuTester.enums.Status;
 import com.GuTester.model.entity.*;
 import com.GuTester.repository.*;
@@ -9,9 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +28,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final DeviceManufacturerRepository deviceManufacturerRepository;
 
-    public Boolean createOrder(@RequestBody OrderDTO dto) {
+    public Boolean createOrder(@RequestBody CreateOrderDTO dto) {
         Order order = new Order();
         order.setDeveloper(developerRepository.findDeveloperByUser(
                             userRepository.findByEmail(
@@ -134,6 +131,10 @@ public class OrderService {
         order.setAdminComment(adminComment);
         orderRepository.save(order);
         return true;
+    }
+
+    public void getAllOrders() {
+
     }
 
 }
