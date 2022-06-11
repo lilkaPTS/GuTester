@@ -36,4 +36,9 @@ public class SelectController {
     public List<String> getAllNetworkNames(){
         return SelectInformationService.getAllNetworkNames();
     }
+
+    @GetMapping("/getAllDeviceManufacturerNames")
+    public List<String> getAllDeviceManufacturerNames(){
+        return SelectInformationService.getAllDeviceManufacturerNames();
+    }
 }

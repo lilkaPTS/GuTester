@@ -1,6 +1,5 @@
 package com.GuTester.dto.order;
 
-import com.GuTester.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +26,8 @@ public class OrderDTO {
     private Integer deviceReleaseYearStart;
 
     private Integer deviceReleaseYearEnd;
+
+    private String contactEmail;
 
     private List<String> devices;
 

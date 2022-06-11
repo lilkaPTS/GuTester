@@ -18,8 +18,6 @@ public class OrderService {
 
     private final UserRepository userRepository;
     private final TesterRepository testerRepository;
-    private final ConfirmationCodeRepository confirmationCodeRepository;
-    private final EmailService emailService;
     private final DeviceRepository deviceRepository;
     private final MobileOperatorRepository mobileOperatorRepository;
     private final NetworkRepository networkRepository;
@@ -33,13 +31,23 @@ public class OrderService {
         order.setDeveloper(developerRepository.findDeveloperByUser(
                             userRepository.findByEmail(
                                 dto.getDeveloperEmail())));
-        order.setOsName(StringUtils.substringBefore(dto.getOsName(), " "));
+        if(
+                order.getDeveloper() == null ||
+                dto.getSourceLink() == null ||
+                dto.getTitle() == null ||
+                dto.getDescription() == null ||
+                dto.getRequiredNumberOfTesters() == null
+        ) {
+            return false;
+        }
+        order.setOsName(dto.getOsName());
         order.setSourceLink(dto.getSourceLink());
         order.setTitle(dto.getTitle());
         order.setDescription(dto.getDescription());
         order.setRequiredNumberOfTesters(dto.getRequiredNumberOfTesters());
         order.setDeviceReleaseYearStart(dto.getDeviceReleaseYearStart());
         order.setDeviceReleaseYearEnd(dto.getDeviceReleaseYearEnd());
+        order.setContactEmail(dto.getContactEmail());
         order.setStatus(Status.CONFIRMATION);
         order.setOrderCreationDate(new Date());
         order.setDevices(dto.getDevices()
@@ -63,11 +71,24 @@ public class OrderService {
                 .map(networkRepository::getNetworkByName)
                 .collect(Collectors.toList())
         );
-        //
-        // need search unapproved testers hear
-        //
-        System.out.println(order);
         orderRepository.save(order);
         return true;
     }
+
+    public Boolean approveOrder(Long orderId) {
+
+        return true;
+    }
+
+    public Boolean rejectOrder(Long orderId, String adminComment) {
+        Order order = orderRepository.getById(orderId);
+        if(order == null) {
+            return false;
+        }
+        order.setStatus(Status.REJECT);
+        order.setAdminComment(adminComment);
+        orderRepository.save(order);
+        return true;
+    }
+
 }

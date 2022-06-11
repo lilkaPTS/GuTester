@@ -119,8 +119,10 @@ create table orders
     required_number_of_testers int2,
     device_release_year_start int2,
     device_release_year_end int2,
+    contact_email varchar(255),
     status varchar(255),
     orders_creation_date date,
+    admin_comment varchar(3000),
     primary key (orders_id),
     CONSTRAINT fk_device FOREIGN KEY (developer_id) references developer(developer_id)
 );

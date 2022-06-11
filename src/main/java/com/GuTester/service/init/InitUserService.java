@@ -2,10 +2,12 @@ package com.GuTester.service.init;
 
 import com.GuTester.dto.registration.DeveloperRegistrationDTO;
 import com.GuTester.dto.registration.TesterRegistrationDTO;
+import com.GuTester.model.entity.OS;
 import com.GuTester.repository.*;
 import com.GuTester.service.RegistrationService;
 import com.GuTester.service.SelectService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,6 +23,7 @@ public class InitUserService {
     private final DeveloperRepository developerRepository;
     private final RegistrationService registrationService;
     private final SelectService selectService;
+    private final DeviceRepository deviceRepository;
 
     public void initDevelopers() {
         if(developerRepository.findAll().size() < 99) {
@@ -53,7 +56,12 @@ public class InitUserService {
                 dto.setPassword(name);
                 dto.setRole("TESTER");
                 dto.setDevices(Collections.singletonList(devices.get((int) (Math.random() * devices.size()))));
-                dto.setOs(Collections.singletonList(os.get((int) (Math.random() * os.size()))));
+                String osForAdd = "";
+                OS osOfInstalledDevice = deviceRepository.getDeviceByDeviceModel(StringUtils.substringAfter(dto.getDevices().stream().findFirst().orElseThrow(), " ")).getOs();
+                while (!osForAdd.equals(osOfInstalledDevice.getName() + " " + osOfInstalledDevice.getVersion())) {
+                    osForAdd = os.get((int) (Math.random() * os.size()));
+                }
+                dto.setOs(Collections.singletonList(osForAdd));
                 dto.setMobileOperators(Collections.singletonList(operators.get((int) (Math.random() * operators.size()))));
                 int count = 0;
                 while (count < 1) {
@@ -70,3 +78,4 @@ public class InitUserService {
     }
 
 }
+

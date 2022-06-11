@@ -46,12 +46,18 @@ public class Order {
     @Column(name = "device_release_year_end")
     private Integer deviceReleaseYearEnd;
 
+    @Column(name = "contact_email")
+    private String contactEmail;
+
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     private Status status;
 
     @Column(name = "orders_creation_date")
     private Date orderCreationDate;
+
+    @Column(name = "admin_comment")
+    private String adminComment;
 
     @ManyToMany
     @JoinTable(name = "orders_device",

@@ -32,4 +32,8 @@ public class SelectService {
     public List<String> getAllNetworkNames() {
         return networkRepository.getAllNames();
     }
+
+    public List<String> getAllDeviceManufacturerNames() {
+        return deviceManufacturerRepository.getAllNames();
+    }
 }
