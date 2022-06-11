@@ -29,6 +29,8 @@ public class OrderDTO {
 
     private String contactEmail;
 
+    private List<String> osList;
+
     private List<String> devices;
 
     private List<String> deviceManufacturers;

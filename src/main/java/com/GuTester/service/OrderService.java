@@ -2,14 +2,19 @@ package com.GuTester.service;
 
 import com.GuTester.dto.order.OrderDTO;
 import com.GuTester.enums.Status;
-import com.GuTester.model.entity.Order;
+import com.GuTester.model.entity.*;
 import com.GuTester.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,6 +55,14 @@ public class OrderService {
         order.setContactEmail(dto.getContactEmail());
         order.setStatus(Status.CONFIRMATION);
         order.setOrderCreationDate(new Date());
+        order.setOsList(dto.getOsList()
+                .stream()
+                .map(os -> osRepository.getOSByNameAndVersion(
+                        StringUtils.substringBefore(os, " "),
+                        StringUtils.substringAfter(os, " ")
+                ))
+                .collect(Collectors.toList())
+        );
         order.setDevices(dto.getDevices()
                 .stream()
                 .map(device -> deviceRepository.getDeviceByDeviceManufacturerAndDeviceModel(
@@ -77,12 +90,43 @@ public class OrderService {
     }
 
     public Boolean approveOrder(Long orderId) {
-
+        Order order = orderRepository.getById(orderId);
+        List<OS> osList = order.getOsList();
+        List<Device> devices = order.getDevices();
+        List<DeviceManufacturer> deviceManufacturers = order.getDeviceManufacturers();
+        List<MobileOperator> mobileOperators = order.getMobileOperators();
+        List<Network> networks = order.getNetworks();
+        Network wifi = networks.contains(networkRepository.getNetworkByName("Wi-Fi")) ? networkRepository.getNetworkByName("Wi-Fi") : null;
+        if(wifi!=null) networks.remove(wifi);
+        int maxG = networks.stream().map(network -> network.getName().replace("G", "")).mapToInt(Integer::parseInt).max().orElse(-1);
+        List<Tester> unapprovedTesters = testerRepository.findAllByOrder(
+                order.getOrderId(),
+                osList.size() != 0,
+                deviceManufacturers.size() != 0,
+                devices.size() != 0,
+                mobileOperators.size() != 0
+        );
+        if(wifi!=null) {
+            unapprovedTesters = unapprovedTesters.stream().filter(tester -> tester.getNetworks().contains(wifi)).collect(Collectors.toList());
+        }
+        if(maxG!=-1) {
+            List<Tester> listToDelete = new ArrayList<>();
+            for (Tester tester : unapprovedTesters) {
+                tester.getNetworks().remove(wifi);
+                if (tester.getNetworks().stream().map(network -> network.getName().replace("G", "")).mapToInt(Integer::parseInt).max().orElse(-1) < maxG) {
+                    listToDelete.add(tester);
+                }
+            }
+            listToDelete.forEach(unapprovedTesters::remove);
+        }
+        order.setUnapprovedTesters(unapprovedTesters);
+        order.setStatus(Status.APPROVED);
+        orderRepository.save(order);
         return true;
     }
 
     public Boolean rejectOrder(Long orderId, String adminComment) {
-        Order order = orderRepository.getById(orderId);
+        Order order = orderRepository.findById(orderId).orElse(null);
         if(order == null) {
             return false;
         }

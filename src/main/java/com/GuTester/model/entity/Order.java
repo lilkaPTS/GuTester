@@ -60,6 +60,12 @@ public class Order {
     private String adminComment;
 
     @ManyToMany
+    @JoinTable(name = "orders_os",
+            joinColumns = @JoinColumn(name = "orders_id"),
+            inverseJoinColumns = @JoinColumn(name = "os_id"))
+    private List<OS> osList;
+
+    @ManyToMany
     @JoinTable(name = "orders_device",
             joinColumns = @JoinColumn(name = "orders_id"),
             inverseJoinColumns = @JoinColumn(name = "device_id"))
@@ -83,15 +89,17 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "network_id"))
     private List<Network> networks;
 
+
+
     @ManyToMany
     @JoinTable(name = "orders_unapproved_tester",
             joinColumns = @JoinColumn(name = "orders_id"),
-            inverseJoinColumns = @JoinColumn(name = "testers_id"))
+            inverseJoinColumns = @JoinColumn(name = "tester_id"))
     private List<Tester> unapprovedTesters;
 
     @ManyToMany
     @JoinTable(name = "orders_approved_tester",
             joinColumns = @JoinColumn(name = "orders_id"),
-            inverseJoinColumns = @JoinColumn(name = "testers_id"))
+            inverseJoinColumns = @JoinColumn(name = "tester_id"))
     private List<Tester> approvedTesters;
 }

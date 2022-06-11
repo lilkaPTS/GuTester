@@ -1,6 +1,8 @@
 package com.GuTester.controller.orderAPI;
 
 import com.GuTester.dto.order.OrderDTO;
+import com.GuTester.model.entity.Order;
+import com.GuTester.repository.OrderRepository;
 import com.GuTester.repository.TesterRepository;
 import com.GuTester.repository.UserRepository;
 import com.GuTester.service.init.InitUserService;
@@ -18,6 +20,7 @@ public class OrderController {
     private final UserRepository userRepository;
     private final OrderService orderService;
     private final InitUserService initUserService;
+    private final OrderRepository orderRepository;
 
     @PostMapping(value = "/createOrder")
     public Boolean createTester(@RequestBody OrderDTO dto) {
@@ -34,4 +37,8 @@ public class OrderController {
         initUserService.initTesters();
     }
 
+    @GetMapping(value = "/getOrderById")
+    public Order getOrderById(Long orderId) {
+        return orderRepository.findById(orderId).orElse(null);
+    }
 }
