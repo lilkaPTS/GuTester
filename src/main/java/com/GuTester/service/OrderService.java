@@ -52,7 +52,8 @@ public class OrderService {
         order.setOrderCreationDate(new Date());
         order.setDevices(dto.getDevices()
                 .stream()
-                .map(device -> deviceRepository.getDeviceByDeviceModel(
+                .map(device -> deviceRepository.getDeviceByDeviceManufacturerAndDeviceModel(
+                        deviceManufacturerRepository.findDeviceManufacturerByName(StringUtils.substringBefore(device, " ")),
                         StringUtils.substringAfter(device, " ")))
                 .collect(Collectors.toList())
         );

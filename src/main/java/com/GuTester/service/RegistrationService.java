@@ -30,6 +30,7 @@ public class RegistrationService {
     private final NetworkRepository networkRepository;
     private final OSRepository osRepository;
     private final DeveloperRepository developerRepository;
+    private final DeviceManufacturerRepository deviceManufacturerRepository;
 
     public Boolean createDeveloper(DeveloperRegistrationDTO registrationDTO, boolean itIsInit) {
         if(!Role.DEVELOPER.equals(Role.valueOf(registrationDTO.getRole()))) {
@@ -78,8 +79,10 @@ public class RegistrationService {
         }
 
         Tester tester = foundTester != null ? foundTester : new Tester();
-        tester.setDevice(deviceRepository.getDeviceByDeviceModel(
-                        StringUtils.substringAfter(registrationDTO.getDevices().stream().findFirst().orElse("-"), " "))
+        String deviceName = registrationDTO.getDevices().stream().findFirst().orElse("-");
+        tester.setDevice(deviceRepository.getDeviceByDeviceManufacturerAndDeviceModel(
+                        deviceManufacturerRepository.findDeviceManufacturerByName(StringUtils.substringBefore(deviceName, " ")),
+                        StringUtils.substringAfter(deviceName, " "))
         );
         tester.setMobileOperator(mobileOperatorRepository.getMobileOperatorByName(registrationDTO.getMobileOperators().stream().findFirst().orElse("-")));
         tester.setNetworks(registrationDTO.getNetworks()

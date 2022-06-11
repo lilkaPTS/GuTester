@@ -24,6 +24,7 @@ public class InitUserService {
     private final RegistrationService registrationService;
     private final SelectService selectService;
     private final DeviceRepository deviceRepository;
+    private final DeviceManufacturerRepository deviceManufacturerRepository;
 
     public void initDevelopers() {
         if(developerRepository.findAll().size() < 99) {
@@ -57,7 +58,10 @@ public class InitUserService {
                 dto.setRole("TESTER");
                 dto.setDevices(Collections.singletonList(devices.get((int) (Math.random() * devices.size()))));
                 String osForAdd = "";
-                OS osOfInstalledDevice = deviceRepository.getDeviceByDeviceModel(StringUtils.substringAfter(dto.getDevices().stream().findFirst().orElseThrow(), " ")).getOs();
+                String deviceName = dto.getDevices().stream().findFirst().orElseThrow();
+                OS osOfInstalledDevice = deviceRepository.getDeviceByDeviceManufacturerAndDeviceModel(
+                        deviceManufacturerRepository.findDeviceManufacturerByName(StringUtils.substringBefore(deviceName, " ")),
+                        StringUtils.substringAfter(deviceName, " ")).getOs();
                 while (!osForAdd.equals(osOfInstalledDevice.getName() + " " + osOfInstalledDevice.getVersion())) {
                     osForAdd = os.get((int) (Math.random() * os.size()));
                 }
