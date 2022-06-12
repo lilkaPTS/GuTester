@@ -159,13 +159,20 @@ public class OrderService {
     }
 
     public List<OrderLowInfoDTO> getAllOrderLowInfoByDeveloperEmail(String email) {
+        return orderListToOrderLowInfoDTOList(orderRepository.findAllByDeveloper(developerRepository.findDeveloperByUser(userRepository.findByEmail(email))));
+    }
+
+    public List<OrderLowInfoDTO> getAllOrderLowInfo() {
+        return orderListToOrderLowInfoDTOList(orderRepository.findAll());
+    }
+
+    private List<OrderLowInfoDTO> orderListToOrderLowInfoDTOList(List<Order> orders) {
         List<OrderLowInfoDTO> result = new ArrayList<>();
-        List<Order> allUserOrder = orderRepository.findAllByDeveloper(developerRepository.findDeveloperByUser(userRepository.findByEmail(email)));
-        for(Order foundOrder : allUserOrder) {
+        for(Order order : orders) {
             OrderLowInfoDTO lowInfoDTO = new OrderLowInfoDTO();
-            lowInfoDTO.setOrderId(foundOrder.getOrderId());
-            lowInfoDTO.setTitle(foundOrder.getTitle());
-            lowInfoDTO.setStatus(foundOrder.getStatus());
+            lowInfoDTO.setOrderId(order.getOrderId());
+            lowInfoDTO.setTitle(order.getTitle());
+            lowInfoDTO.setStatus(order.getStatus());
             result.add(lowInfoDTO);
         }
         return result;

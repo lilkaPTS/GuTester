@@ -2,10 +2,7 @@ package com.GuTester.controller.account.admin;
 
 import com.GuTester.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -15,12 +12,12 @@ public class AdminController {
 
     private final OrderService orderService;
 
-    @GetMapping(value = "/approveOrder")
+    @PutMapping(value = "/approveOrder")
     public Boolean approveOrder(Long orderId) {
         return orderService.approveOrder(orderId);
     }
 
-    @GetMapping(value = "/rejectOrder")
+    @PutMapping(value = "/rejectOrder")
     public Boolean rejectOrder(Long orderId, String adminComment) {
         return orderService.rejectOrder(orderId, adminComment);
     }

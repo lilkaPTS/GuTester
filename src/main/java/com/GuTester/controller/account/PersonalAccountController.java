@@ -23,6 +23,11 @@ public class PersonalAccountController {
         return orderService.getAllOrderLowInfoByDeveloperEmail(developerEmail);
     }
 
+    @GetMapping(value = "/getAllOrderLowInfo")
+    public List<OrderLowInfoDTO> getAllOrderLowInfo() {
+        return orderService.getAllOrderLowInfo();
+    }
+
     @GetMapping(value = "/getOrderFullInfoByOrderId")
     public OrderFullInfoDTO getOrderFullInfoByOrderId(Long orderId) {
         return orderService.getOrderFullInfoByOrderId(orderId);
