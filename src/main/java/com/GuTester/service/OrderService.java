@@ -1,17 +1,16 @@
 package com.GuTester.service;
 
 import com.GuTester.dto.order.CreateOrderDTO;
+import com.GuTester.dto.order.OrderFullInfoDTO;
+import com.GuTester.dto.order.OrderLowInfoDTO;
 import com.GuTester.enums.Status;
 import com.GuTester.model.entity.*;
 import com.GuTester.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,21 +27,22 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final DeviceManufacturerRepository deviceManufacturerRepository;
 
-    public Boolean createOrder(@RequestBody CreateOrderDTO dto) {
-        Order order = new Order();
+    private Boolean setOrderFromCreateOrderDTO(Order order, CreateOrderDTO dto) {
         order.setDeveloper(developerRepository.findDeveloperByUser(
-                            userRepository.findByEmail(
-                                dto.getDeveloperEmail())));
+                userRepository.findByEmail(
+                        dto.getDeveloperEmail())));
         if(
                 order.getDeveloper() == null ||
-                dto.getSourceLink() == null ||
-                dto.getTitle() == null ||
-                dto.getDescription() == null ||
-                dto.getRequiredNumberOfTesters() == null
+                        dto.getSourceLink() == null ||
+                        dto.getTitle() == null ||
+                        dto.getDescription() == null ||
+                        dto.getRequiredNumberOfTesters() == null
         ) {
             return false;
         }
-        order.setOsName(dto.getOsName());
+        if(StringUtils.isNotBlank(dto.getOsName())) {
+            order.setOsName(dto.getOsName());
+        }
         order.setSourceLink(dto.getSourceLink());
         order.setTitle(dto.getTitle());
         order.setDescription(dto.getDescription());
@@ -82,8 +82,33 @@ public class OrderService {
                 .map(networkRepository::getNetworkByName)
                 .collect(Collectors.toList())
         );
-        orderRepository.save(order);
         return true;
+    }
+
+    public Boolean createOrder(CreateOrderDTO dto) {
+        Order order = new Order();
+        Boolean setResult = setOrderFromCreateOrderDTO(order, dto);
+        if(setResult) {
+            orderRepository.save(order);
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public Boolean reopenOrder(CreateOrderDTO dto) {
+        Order order = orderRepository.findById(dto.getOrderId()).orElse(null);
+        if(order == null) {
+            return false;
+        }
+        Boolean setResult = setOrderFromCreateOrderDTO(order, dto);
+        if(setResult) {
+            orderRepository.save(order);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Boolean approveOrder(Long orderId) {
@@ -133,8 +158,57 @@ public class OrderService {
         return true;
     }
 
-    public void getAllOrders() {
+    public List<OrderLowInfoDTO> getAllOrderLowInfoByDeveloperEmail(String email) {
+        List<OrderLowInfoDTO> result = new ArrayList<>();
+        List<Order> allUserOrder = orderRepository.findAllByDeveloper(developerRepository.findDeveloperByUser(userRepository.findByEmail(email)));
+        for(Order foundOrder : allUserOrder) {
+            OrderLowInfoDTO lowInfoDTO = new OrderLowInfoDTO();
+            lowInfoDTO.setOrderId(foundOrder.getOrderId());
+            lowInfoDTO.setTitle(foundOrder.getTitle());
+            lowInfoDTO.setStatus(foundOrder.getStatus());
+            result.add(lowInfoDTO);
+        }
+        return result;
+    }
 
+    public OrderFullInfoDTO getOrderFullInfoByOrderId(Long orderId) {
+        OrderFullInfoDTO result = new OrderFullInfoDTO();
+        Order foundOrder = orderRepository.findById(orderId).orElse(null);
+        if(foundOrder==null) {
+            return null;
+        }
+        result.setOrderId(foundOrder.getOrderId());
+        result.setStatus(foundOrder.getStatus());
+        result.setAdminComment(foundOrder.getAdminComment());
+        result.setSourceLink(foundOrder.getSourceLink());
+        result.setTitle(foundOrder.getTitle());
+        result.setDescription(foundOrder.getDescription());
+        result.setRequiredNumberOfTesters(foundOrder.getRequiredNumberOfTesters());
+        result.setDeviceReleaseYearStart(foundOrder.getDeviceReleaseYearStart());
+        result.setDeviceReleaseYearEnd(foundOrder.getDeviceReleaseYearEnd());
+        result.setContactEmail(foundOrder.getContactEmail());
+        result.setOsList(foundOrder.getOsList().stream().map(os -> os.getName() + " " + os.getVersion()).collect(Collectors.toList()));
+        result.setDevices(foundOrder.getDevices().stream().map(device -> device.getDeviceManufacturer().getName() + " " + device.getDeviceModel()).collect(Collectors.toList()));
+        result.setDeviceManufacturers(foundOrder.getDeviceManufacturers().stream().map(DeviceManufacturer::getName).collect(Collectors.toList()));
+        result.setMobileOperators(foundOrder.getMobileOperators().stream().map(MobileOperator::getName).collect(Collectors.toList()));
+        result.setNetworks(foundOrder.getNetworks().stream().map(Network::getName).collect(Collectors.toList()));
+        return result;
+    }
+
+
+
+    public String getAdminCommentByOrderId(Long orderId) {
+        return orderRepository.findById(orderId).orElse(new Order()).getAdminComment();
+    }
+
+    public Boolean removeOrderByOrderId(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if(order!=null) {
+            orderRepository.delete(order);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

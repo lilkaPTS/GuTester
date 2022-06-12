@@ -17,10 +17,14 @@ public class OrderController {
     private final OrderRepository orderRepository;
 
     @PostMapping(value = "/createOrder")
-    public Boolean createTester(@RequestBody CreateOrderDTO dto) {
+    public Boolean createOrder(@RequestBody CreateOrderDTO dto) {
         return orderService.createOrder(dto);
     }
 
+    @PostMapping(value = "/reopenOrder")
+    public Boolean reopenOrder(@RequestBody CreateOrderDTO dto) {
+        return orderService.reopenOrder(dto);
+    }
 
     @GetMapping(value = "/getOrderById")
     public Order getOrderById(Long orderId) {

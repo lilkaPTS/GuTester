@@ -11,6 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateOrderDTO {
 
+    private Long orderId;
+
     private String developerEmail;
 
     private String osName;
