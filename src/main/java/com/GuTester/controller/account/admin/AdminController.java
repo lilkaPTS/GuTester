@@ -13,7 +13,7 @@ public class AdminController {
     private final OrderService orderService;
 
     @PutMapping(value = "/approveOrder")
-    public Boolean approveOrder(Long orderId) {
+    public Boolean approveOrder(@RequestBody Long orderId) {
         return orderService.approveOrder(orderId);
     }
 
