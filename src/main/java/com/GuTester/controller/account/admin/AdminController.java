@@ -21,4 +21,9 @@ public class AdminController {
     public Boolean rejectOrder(Long orderId, String adminComment) {
         return orderService.rejectOrder(orderId, adminComment);
     }
+
+    @PostMapping(value = "/createDevice")
+    public Boolean createDevice() {
+        return true;
+    }
 }

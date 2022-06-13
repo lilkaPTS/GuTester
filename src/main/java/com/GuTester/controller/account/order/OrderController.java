@@ -1,5 +1,6 @@
 package com.GuTester.controller.account.order;
 
+import com.GuTester.dto.order.InvitationActionDTO;
 import com.GuTester.dto.order.ApprovedTestersDTO;
 import com.GuTester.dto.order.CreateOrderDTO;
 import com.GuTester.model.entity.Order;
@@ -7,8 +8,6 @@ import com.GuTester.repository.OrderRepository;
 import com.GuTester.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -34,6 +33,15 @@ public class OrderController {
         return orderService.setApprovedTesters(dto);
     }
 
+    @PostMapping(value = "/acceptInvitation")
+    private Boolean acceptInvitation(@RequestBody InvitationActionDTO dto) {
+        return false;
+    }
+
+    @PostMapping(value = "/declineInvitation")
+    private Boolean declineInvitation(@RequestBody InvitationActionDTO dto) {
+        return false;
+    }
 
     @GetMapping(value = "/getOrderById")
     public Order getOrderById(Long orderId) {

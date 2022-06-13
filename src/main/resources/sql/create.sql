@@ -199,6 +199,15 @@ create table orders_unapproved_tester (
     PRIMARY KEY (orders_id, tester_id),
     CONSTRAINT fk_orders FOREIGN KEY (orders_id) references orders(orders_id),
     CONSTRAINT fk_tester FOREIGN KEY (tester_id) references tester(tester_id)
+);
+
+
+create table orders_agreed_tester (
+    orders_id bigint,
+    tester_id bigint,
+    PRIMARY KEY (orders_id, tester_id),
+    CONSTRAINT fk_orders FOREIGN KEY (orders_id) references orders(orders_id),
+    CONSTRAINT fk_tester FOREIGN KEY (tester_id) references tester(tester_id)
 )
 
 

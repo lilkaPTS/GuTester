@@ -124,7 +124,9 @@ public class OrderService {
                 osList.size() != 0,
                 deviceManufacturers.size() != 0,
                 devices.size() != 0,
-                mobileOperators.size() != 0
+                mobileOperators.size() != 0,
+                order.getDeviceReleaseYearStart() != null,
+                order.getDeviceReleaseYearEnd() != null
         );
         if(wifi!=null) {
             unapprovedTesters = unapprovedTesters.stream().filter(tester -> tester.getNetworks().contains(wifi)).collect(Collectors.toList());

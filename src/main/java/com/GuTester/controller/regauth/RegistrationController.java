@@ -33,4 +33,14 @@ public class RegistrationController {
     public void sendConfirmationCode(@RequestBody String email) {
         registrationService.sendConfirmationCode(email);
     }
+
+    @PostMapping("/editTesterAccount")
+    public Boolean editTesterAccount() {
+        return false;
+    }
+
+    @PostMapping("/editDeveloperAccount")
+    public Boolean editDeveloperAccount() {
+        return false;
+    }
 }

@@ -102,4 +102,10 @@ public class Order {
             joinColumns = @JoinColumn(name = "orders_id"),
             inverseJoinColumns = @JoinColumn(name = "tester_id"))
     private List<Tester> approvedTesters;
+
+    @ManyToMany
+    @JoinTable(name = "orders_agreed_tester",
+            joinColumns = @JoinColumn(name = "orders_id"),
+            inverseJoinColumns = @JoinColumn(name = "tester_id"))
+    private List<Tester> agreedTesters;
 }

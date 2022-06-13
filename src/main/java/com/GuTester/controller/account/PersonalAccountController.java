@@ -2,11 +2,13 @@ package com.GuTester.controller.account;
 
 import com.GuTester.dto.order.OrderFullInfoDTO;
 import com.GuTester.dto.order.OrderLowInfoDTO;
+import com.GuTester.dto.order.OrderMidInfoDTO;
 import com.GuTester.dto.order.TesterDTO;
 import com.GuTester.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,11 @@ public class PersonalAccountController {
     @GetMapping(value = "/getAllOrderLowInfoByDeveloperEmail")
     public List<OrderLowInfoDTO> getAllOrderLowInfoByDeveloperEmail(String developerEmail) {
         return orderService.getAllOrderLowInfoByDeveloperEmail(developerEmail);
+    }
+
+    @GetMapping(value = "/getAllOrderMidInfoByTesterEmail")
+    public List<OrderMidInfoDTO> getAllOrderMidInfoByTesterEmail(String testerEmail) {
+        return new ArrayList<>();
     }
 
     @GetMapping(value = "/getAllOrderLowInfo")
@@ -49,5 +56,18 @@ public class PersonalAccountController {
         return orderService.removeOrderByOrderId(orderId);
     }
 
+    @PostMapping(value = "/createDeviceOrder")
+    public Boolean createDeviceOrder() {
+        return false;
+    }
 
+    @PutMapping(value = "/evaluateWork")
+    public Boolean evaluateWork() {
+        return false;
+    }
+
+    @PutMapping(value = "/publishOrder")
+    public Boolean publishOrder() {
+        return false;
+    }
 }
