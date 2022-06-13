@@ -1,8 +1,6 @@
 package com.GuTester.service;
 
-import com.GuTester.dto.order.CreateOrderDTO;
-import com.GuTester.dto.order.OrderFullInfoDTO;
-import com.GuTester.dto.order.OrderLowInfoDTO;
+import com.GuTester.dto.order.*;
 import com.GuTester.enums.Status;
 import com.GuTester.model.entity.*;
 import com.GuTester.repository.*;
@@ -216,6 +214,40 @@ public class OrderService {
         } else {
             return false;
         }
+    }
+
+    public List<TesterDTO> getUnapprovedTestersByOrderId(Long orderId) {
+        List<TesterDTO> result = new ArrayList<>();
+        Order order = orderRepository.findById(orderId).orElseThrow(null);
+        if(order == null) {
+            return null;
+        }
+        List<Tester> foundUnapprovedTesters = order.getUnapprovedTesters();
+        for(Tester foundTester: foundUnapprovedTesters) {
+            TesterDTO dto = new TesterDTO();
+            dto.setName(foundTester.getUser().getName());
+            dto.setEmail(foundTester.getUser().getEmail());
+            dto.setDevice(foundTester.getDevice().getName());
+            dto.setMobileOperator(foundTester.getMobileOperator().getName());
+            dto.setNetworks(foundTester.getNetworks().stream().map(Network::getName).collect(Collectors.toList()));
+            dto.setRating(foundTester.getRating());
+            result.add(dto);
+        }
+        return result;
+    }
+
+    public Boolean setApprovedTesters(ApprovedTestersDTO dto) {
+        Order order = orderRepository.findById(dto.getOrderId()).orElseThrow(null);
+        if(order == null) {
+            return false;
+        }
+        order.setApprovedTesters(dto.getEmails().stream()
+                .map(email -> testerRepository.findTesterByUser(userRepository.findByEmail(email)))
+                .collect(Collectors.toList())
+        );
+        order.setStatus(Status.ACTIVE);
+        orderRepository.save(order);
+        return true;
     }
 
 }

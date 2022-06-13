@@ -39,4 +39,8 @@ public class Device {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     private Status status;
+
+    public String getName() {
+        return this.deviceManufacturer.getName() + " " + this.getDeviceModel();
+    }
 }

@@ -2,6 +2,7 @@ package com.GuTester.controller.account;
 
 import com.GuTester.dto.order.OrderFullInfoDTO;
 import com.GuTester.dto.order.OrderLowInfoDTO;
+import com.GuTester.dto.order.TesterDTO;
 import com.GuTester.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +39,15 @@ public class PersonalAccountController {
         return Collections.singletonMap("adminComment", orderService.getAdminCommentByOrderId(orderId));
     }
 
+    @GetMapping(value = "/getUnapprovedTestersByOrderId")
+    public List<TesterDTO> getUnapprovedTestersByOrderId(Long orderId) {
+        return orderService.getUnapprovedTestersByOrderId(orderId);
+    }
+
     @DeleteMapping(value = "/removeOrderByOrderId")
     public Boolean removeOrderByOrderId(Long orderId) {
         return orderService.removeOrderByOrderId(orderId);
     }
+
 
 }
