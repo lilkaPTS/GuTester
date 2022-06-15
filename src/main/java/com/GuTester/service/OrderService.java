@@ -50,36 +50,46 @@ public class OrderService {
         order.setContactEmail(dto.getContactEmail());
         order.setStatus(Status.CONFIRMATION);
         order.setOrderCreationDate(new Date());
-        order.setOsList(dto.getOsList()
-                .stream()
-                .map(os -> osRepository.getOSByNameAndVersion(
-                        StringUtils.substringBefore(os, " "),
-                        StringUtils.substringAfter(os, " ")
-                ))
-                .collect(Collectors.toList())
-        );
-        order.setDevices(dto.getDevices()
-                .stream()
-                .map(device -> deviceRepository.getDeviceByDeviceManufacturerAndDeviceModel(
-                        deviceManufacturerRepository.findDeviceManufacturerByName(StringUtils.substringBefore(device, " ")),
-                        StringUtils.substringAfter(device, " ")))
-                .collect(Collectors.toList())
-        );
-        order.setDeviceManufacturers(dto.getDeviceManufacturers()
-                .stream()
-                .map(deviceManufacturerRepository::findDeviceManufacturerByName)
-                .collect(Collectors.toList())
-        );
-        order.setMobileOperators(dto.getMobileOperators()
-                .stream()
-                .map(mobileOperatorRepository::getMobileOperatorByName)
-                .collect(Collectors.toList())
-        );
-        order.setNetworks(dto.getNetworks()
-                .stream()
-                .map(networkRepository::getNetworkByName)
-                .collect(Collectors.toList())
-        );
+        if(dto.getOsList() != null) {
+            order.setOsList(dto.getOsList()
+                    .stream()
+                    .map(os -> osRepository.getOSByNameAndVersion(
+                            StringUtils.substringBefore(os, " "),
+                            StringUtils.substringAfter(os, " ")
+                    ))
+                    .collect(Collectors.toList())
+            );
+        } else order.setOsList(new ArrayList<>());
+        if(dto.getDevices() != null ) {
+            order.setDevices(dto.getDevices()
+                    .stream()
+                    .map(device -> deviceRepository.getDeviceByDeviceManufacturerAndDeviceModel(
+                            deviceManufacturerRepository.findDeviceManufacturerByName(StringUtils.substringBefore(device, " ")),
+                            StringUtils.substringAfter(device, " ")))
+                    .collect(Collectors.toList())
+            );
+        } else order.setDevices(new ArrayList<>());
+        if(dto.getDeviceManufacturers() != null) {
+            order.setDeviceManufacturers(dto.getDeviceManufacturers()
+                    .stream()
+                    .map(deviceManufacturerRepository::findDeviceManufacturerByName)
+                    .collect(Collectors.toList())
+            );
+        } else order.setDeviceManufacturers(new ArrayList<>());
+        if(dto.getMobileOperators() != null) {
+            order.setMobileOperators(dto.getMobileOperators()
+                    .stream()
+                    .map(mobileOperatorRepository::getMobileOperatorByName)
+                    .collect(Collectors.toList())
+            );
+        } else order.setMobileOperators(new ArrayList<>());
+        if(dto.getMobileOperators() != null) {
+            order.setNetworks(dto.getNetworks()
+                    .stream()
+                    .map(networkRepository::getNetworkByName)
+                    .collect(Collectors.toList())
+            );
+        } else order.setNetworks(new ArrayList<>());
         return true;
     }
 
